@@ -2,7 +2,7 @@ name: Work Board checks
 
 on:
   push:
-    branches: [case-01-work-board]
+    branches: [main]
 
 permissions:
   contents: read

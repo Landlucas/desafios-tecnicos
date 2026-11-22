@@ -59,7 +59,7 @@ npm test -- -t 'same-column move at capacity'
 
 Show each test’s actual runner output. The expected result is one passing test per command. In the full verification run, Vitest passed 27 checks and Playwright passed both Chromium scenarios.
 
-If time allows, show the GitHub Actions run for the submitted commit. It repeats the static checks, build, Vitest, and Chromium Playwright on each push to the case branch.
+If time allows, show the GitHub Actions run for the submitted commit. It repeats the static checks, build, Vitest, and Chromium Playwright on each push to `main`.
 
 ## 17:00–20:00 · Decisions, scope, and human review
 
@@ -89,4 +89,4 @@ If time allows, show the GitHub Actions run for the submitted commit. It repeats
 
 For the recording, use “I reviewed” only after doing that pass yourself. Codex was the agent used for this project.
 
-Keep the fork branch link, full commit hash, recording link, and time spent handy for your submission.
+Keep the repository link, full commit hash, recording link, and time spent handy for your submission.
