@@ -59,15 +59,19 @@ npm test -- -t 'same-column move at capacity'
 
 Show each test’s actual runner output. The expected result is one passing test per command. In the full verification run, Vitest passed 27 checks and Playwright passed both Chromium scenarios.
 
-## 17:00–20:00 · Decisions, prose, and human review
+## 17:00–20:00 · Decisions, scope, and human review
 
-**Show** the decision notes in the README, then return to `undo` and `moveTask` in the editor.
+**17:00–18:00 — Show** the decision notes in the README, then return to `undo` and `moveTask` in the editor.
 
 **Say** “I compared the inverse-action results with snapshots of the same sequence. All three Undos matched the previous task collections. Inverse actions keep each record small and explicit. They do require a reversal for each supported operation. Snapshots would be easier to reason about if future actions changed many fields at once.”
 
 “I also tried checking capacity before the same-column guard. The unit test then failed by reporting a capacity error for a move that left occupancy unchanged. Putting the same-column check first restored the expected result.”
 
-**Show** the spec’s acceptance table and the task list in `BoardColumn.tsx` and `styles.css`.
+**18:00–18:45 — Show** the `useMemo` in `src/components/BoardScreen.tsx`. Point out that it reuses the sorted columns while the board state stays the same.
+
+**Say** “I kept the existing Vite build and used one `useMemo` for column sorting. React Compiler can automate memoization, but it adds a build step. For this small board, I’d profile a larger workload before adding it. The exercise covers a single-person, in-memory session. Refresh resets the board, and the history supports Undo. Accounts, real-time collaboration, persistent storage, standalone deletion, and Redo are outside the exercise.”
+
+**18:45–20:00 — Show** the spec’s acceptance table and the task list in `BoardColumn.tsx` and `styles.css`.
 
 **Say** “My default is to ban comments written by or for coding agents. They go stale, humans skim past them, and a suppression comment can become an escape hatch that lets an agent justify a bad pattern. Here, I restored the native list markers and made them transparent in CSS. That let me remove the redundant ARIA role and its lint suppression while preserving the list structure. I keep requirements and rationale in the spec and use clear names and tests to express behavior.”
 
@@ -79,7 +83,7 @@ Show each test’s actual runner output. The expected result is one passing test
 | Static analysis | Biome and strict TypeScript | “These give fast feedback on invalid patterns and type errors before I run the app.” |
 | Verification | Playwright’s rejected move and two Undos, with Vitest as the domain-level complement | “Playwright shows whether the user’s workflow actually works. Vitest isolates edge cases like moving within a full column.” |
 | Prose | Spec, test plan, and README | “I gave Codex the brief and acceptance criteria, then asked it for a focused implementation with test evidence. The same artifact-based workflow would work with Claude Code.” |
-| Human review | The capacity guard and the two Undo assertions | “I would read the diff against the brief, predict and rerun the demo, and check whether the assertions prove the intended behavior. The board is session-only, and the fixed limit keeps its history valid.” |
+| Human review | The capacity guard and the two Undo assertions | “I would read the diff against the brief, predict and rerun the demo, and check whether the assertions prove the intended behavior.” |
 
 For the recording, use “I reviewed” only after doing that pass yourself. Codex was the agent used for this project.
 
