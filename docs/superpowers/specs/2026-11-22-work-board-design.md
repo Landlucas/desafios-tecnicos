@@ -16,3 +16,8 @@
 - Test for a same-column move after validating the task and destination and before checking capacity. A move within In Progress leaves occupancy unchanged.
 - IDs are user-entered, case-sensitive, trimmed, unique, and sorted by JavaScript string comparison. Titles are trimmed. Blank IDs and titles are rejected. Limits are nonnegative safe integers. Zero disables entry into In Progress.
 - Use a one-time setup step and a pure TypeScript domain. The React reducer holds the board and the latest feedback. No persistent storage is needed.
+
+## React structure
+
+- Give each component a dedicated file. The app shell switches between setup and the board screen. The board screen owns the reducer and delegates form, column, card, and feedback rendering.
+- Keep draft values in their forms. A successful creation clears the draft and focuses the ID field. A failed creation preserves the draft. Successful moves keep keyboard focus on the moved card.

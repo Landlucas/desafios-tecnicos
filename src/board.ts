@@ -1,7 +1,7 @@
 export const columns = ['a_fazer', 'em_andamento', 'concluido'] as const
 export type Column = typeof columns[number]
 
-type Task = Readonly<{ id: string; title: string; column: Column }>
+export type Task = Readonly<{ id: string; title: string; column: Column }>
 type InverseAction = Readonly<
   | { type: 'remove_created'; id: string }
   | { type: 'restore_column'; id: string; column: Column }
