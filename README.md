@@ -19,12 +19,14 @@ Open the localhost URL printed by Vite. The board runs entirely in the browser. 
 
 ```sh
 npx playwright install chromium
+npm run lint
+npm run typecheck
 npm test
 npm run test:e2e
 npm run build
 ```
 
-Playwright starts a local Vite server on port 4173. Keep that port free for the test run. The build writes static assets to `dist/`.
+Playwright starts a local Vite server on port 4173. Keep that port free for the test run. Biome checks the source, tests, and Playwright configuration, including recommended React rules. TypeScript checks the project in strict mode. The build runs that type check before writing static assets to `dist/`.
 
 ## Reproduce the demo
 
@@ -52,7 +54,7 @@ Playwright starts a local Vite server on port 4173. Keep that port free for the 
 
 ## Time, scope, and AI use
 
-- **Time spent** — Approximately 14 minutes of elapsed AI-assisted work across setup, implementation, tests, documentation, recording preparation, and the React refactor. Add your own review and rehearsal time separately.
-- **Validation** — The domain and browser checks ran before and after the implementation. The guard-order experiment exercised a realistic regression. A separate code review identified stale blank-submission feedback, which was reproduced and fixed with Playwright. Verification also covered the production build and the README workflow in a clean checkout.
+- **Time spent** — Approximately 17 minutes of elapsed AI-assisted work across implementation, review, testing, static analysis, and recording preparation. Add your own review and rehearsal time separately.
+- **Validation** — The domain and browser checks ran before and after the implementation. The guard-order experiment exercised a realistic regression. A separate code review identified stale blank-submission feedback, which was reproduced and fixed with Playwright. Verification also covered Biome, strict TypeScript checking, the production build, and the README workflow in a clean checkout.
 - **AI use** — Codex drafted the specification, implementation, tests, and documentation, and ran the checks above. The two experiments and clean-checkout run supplied concrete evidence for the implementation choices. Candidate review and the video recording remain pending.
 - **Before submitting** — Review the ID and capacity assumptions, rerun the demo, and explain the two decisions in your own words. Confirm your total time and the video link’s reviewer access. The [recording outline](docs/recording-outline.md) gives the 20-minute walkthrough.

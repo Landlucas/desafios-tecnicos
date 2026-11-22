@@ -47,8 +47,6 @@ h3 { font-size: 1.13rem; line-height: 1.3; overflow-wrap: anywhere; }
 
 .setup { display: grid; gap: .75rem; width: min(100%, 30rem); }
 .setup p { color: var(--muted); }
-.setup input { width: 9rem; }
-.setup button { justify-self: start; }
 
 label { display: grid; gap: .32rem; font-size: .9rem; font-weight: 650; min-width: 0; }
 input, select {
@@ -71,6 +69,9 @@ button.secondary { background: var(--paper); color: var(--green); border-color: 
 button.secondary:hover { background: #e9f2ea; }
 button:disabled { cursor: default; opacity: .5; }
 button.secondary:disabled:hover { background: var(--paper); }
+
+.setup input { width: 9rem; }
+.setup button { justify-self: start; }
 
 .toolbar, .create-form, .move-form { display: grid; align-items: end; gap: .75rem; }
 .toolbar { grid-template-columns: minmax(0, 1fr) auto; gap: 1.25rem; }
