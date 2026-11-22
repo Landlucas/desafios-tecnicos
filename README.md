@@ -1,31 +1,58 @@
-# Desafios técnicos da Alvorada
+# Case 01 · Work Board with History
 
-Escolha um dos casos abaixo e construa uma solução com as ferramentas que você conhece melhor. Você pode se concentrar na interface, no back-end, na arquitetura, nos algoritmos ou nos dados. O importante é implementar as regras do desafio e mostrar como conferiu o resultado.
+**Focus** — Front-end engineering with a pure TypeScript model for board rules and a React interface that makes Undo and action results visible.
 
-Cada documento traz tudo de que você precisa, desde o problema até as instruções de entrega. Basta abrir o caso escolhido.
+Set the In Progress limit before starting a board. Create tasks in To Do and move them among To Do, In Progress, and Done. Each column sorts by text ID. Undo reverses the latest successful change. Refreshing the browser starts a fresh session. See the [official brief](casos/01-quadro-de-trabalho.md) and the [acceptance criteria](docs/superpowers/specs/2026-11-22-work-board-design.md).
 
-## Escolha um caso
+## Run locally
 
-- [Caso 01 — Quadro de trabalho com histórico](casos/01-quadro-de-trabalho.md)
-- [Caso 02 — Reservas sem conflito](casos/02-reservas-de-recursos.md)
-- [Caso 03 — Planejador de rotas com bloqueios](casos/03-planejador-de-rotas.md)
-- [Caso 04 — Divisão de despesas de um grupo](casos/04-divisao-de-despesas.md)
-- [Caso 05 — Sincronização de notas offline](casos/05-sincronizacao-de-notas.md)
-- [Caso 06 — Avaliador de predições e abstenções](casos/06-avaliador-de-predicoes.md)
-- [Caso 07 — Monitor de sensores com histerese](casos/07-monitor-de-sensores.md)
-- [Caso 08 — Executor de tarefas com dependências](casos/08-executor-de-tarefas.md)
-- [Caso 09 — Página de cidade para uma instaladora de energia solar](casos/09-pagina-de-cidade.md)
-- [Caso 10 — Pipeline de vendas e conciliação de pagamentos](casos/10-pipeline-de-dados.md)
+Use Node.js 22.12+ on the 22.x line, 24.x, or 26+. Verification used Node.js 26.12.1 and npm 11.20.0.
 
-## Como funciona
+```sh
+git clone --branch case-01-work-board https://github.com/Landlucas/desafios-tecnicos.git
+cd desafios-tecnicos
+npm ci
+npm run dev
+```
 
-Sugerimos dedicar até quatro horas ao código, aos testes e à documentação. Pode usar IA e outras ferramentas, contando como elas ajudaram e como você verificou o resultado.
+Open the localhost URL printed by Vite. The board runs entirely in the browser. In a separate terminal:
 
-## O que entregar
+```sh
+npx playwright install chromium
+npm test
+npm run test:e2e
+npm run build
+```
 
-- **Um repositório Git com o código, os testes e a documentação da solução**, incluindo as instruções para instalar, executar e conferir o projeto.
-- **Um vídeo de até 30 minutos explicando em inglês a solução**, com uma demonstração do funcionamento e uma conversa sobre suas escolhas e os principais trechos de código.
+Playwright starts a local Vite server on port 4173. Keep that port free for the test run. The build writes static assets to `dist/`.
 
-Compartilhe os links do repositório e do vídeo pelo canal do processo. Sua solução deve ficar no seu próprio repositório, sem abrir um PR neste catálogo.
+## Reproduce the demo
 
-Depois da entrega, teremos uma entrevista técnica para conversar sobre suas escolhas e revisar código. Seu currículo e as conversas anteriores também ajudam a entender seu contexto. O exercício busca conhecer seu momento profissional, sem funcionar como um filtro eliminatório.
+| Action | Expected result |
+| --- | --- |
+| Set **In Progress limit** to **1** and click **Start board**. | In Progress reads **0 / 1** and Undo is disabled. |
+| Add `DOC-01` titled **Docs**, then `REV-02` titled **Review**. | Both cards appear in To Do, sorted by ID, and Undo is enabled. |
+| On Review, select **In Progress** under **Move to** and click **Move**. | Review moves and In Progress reads **1 / 1**. |
+| On Docs, select **In Progress** and click **Move**. | The board reports that In Progress is full. Docs stays in To Do. |
+| Click **Undo**. | Review returns to To Do and capacity reads **0 / 1**. |
+| Click **Undo** again. | Review disappears. Docs remains. |
+
+## Three tests to review
+
+| Test | Expected result and regression it catches |
+| --- | --- |
+| [Playwright workflow](tests/work-board.spec.ts) | Review returns to To Do on the first Undo and disappears on the second. This catches recording a rejected move or reversing creations incorrectly. |
+| [Vitest same-column move at capacity](src/board.test.ts) | Returns `no_change` and preserves the board, including history. This catches treating a move within a full column as a capacity violation. |
+| [Vitest restoration through a full column](src/board.test.ts) | Each Undo restores the prior board until the history is empty, including a state with a full In Progress column. This catches restoring a wrong destination, removing the wrong task, or adding a history entry during Undo. |
+
+## Two investigated decisions
+
+1. **Inverse actions or task snapshots.** I compared the Docs/Review inverse history with a reference stack of the task arrays before each successful action. All three Undos restored the matching prior task arrays. In that specific sequence, serializing the inverse entries took 140 bytes and serializing the task snapshots took 160 bytes. The check compares JSON representations. In-memory costs also depend on structural sharing. I kept inverse actions because an entry stores the task ID and, for a move, its prior column. Snapshots would simplify restoration if more fields or multi-task edits entered the history.
+2. **Same-column check before the capacity check.** I temporarily reversed the guards and ran the targeted Vitest case. It failed with `in_progress_full` where `same_column` was expected. Restoring guard order made the test pass. The capacity guard now applies only to moves that enter In Progress.
+
+## Time, scope, and AI use
+
+- **Time spent** — Approximately 12 minutes of elapsed AI-assisted work across setup, implementation, tests, documentation, and recording preparation. Add your own review and rehearsal time separately.
+- **Validation** — The domain and browser checks ran before and after the implementation. The guard-order experiment exercised a realistic regression. A separate code review identified stale blank-submission feedback, which was reproduced and fixed with Playwright. Verification also covered the production build and the README workflow in a clean checkout.
+- **AI use** — Codex drafted the specification, implementation, tests, and documentation, and ran the checks above. The two experiments and clean-checkout run supplied concrete evidence for the implementation choices. Candidate review and the video recording remain pending.
+- **Before submitting** — Review the ID and capacity assumptions, rerun the demo, and explain the two decisions in your own words. Confirm your total time and the video link’s reviewer access. The [recording outline](docs/recording-outline.md) gives the 20-minute walkthrough.

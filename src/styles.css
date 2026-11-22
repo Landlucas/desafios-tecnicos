@@ -1,0 +1,138 @@
+:root {
+  font-family: "Avenir Next", Avenir, system-ui, sans-serif;
+  color: #172820;
+  background: #f5f3ee;
+  font-synthesis: none;
+  --ink: #172820;
+  --muted: #536258;
+  --green: #215641;
+  --line: #d5dbd1;
+  --paper: #fffefa;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+button, input, select { font: inherit; }
+button, input, select { min-height: 2.75rem; border-radius: .5rem; }
+button { cursor: pointer; }
+
+:focus-visible {
+  outline: .19rem solid #177a61;
+  outline-offset: .2rem;
+}
+
+.workspace {
+  width: min(76rem, calc(100% - 3rem));
+  margin: clamp(2rem, 6vw, 5rem) auto;
+}
+
+.page-heading {
+  border-top: .3rem solid var(--green);
+  padding-top: 1.1rem;
+  margin-bottom: 1.75rem;
+}
+
+h1, h2, h3, p { margin: 0; }
+h1 { font-size: clamp(2.4rem, 6vw, 4.2rem); line-height: 1.05; letter-spacing: -.06em; }
+.page-heading p { color: var(--muted); margin-top: .6rem; }
+h2 { font-size: 1.12rem; }
+h3 { font-size: 1.13rem; line-height: 1.3; overflow-wrap: anywhere; }
+
+.panel {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: .9rem;
+  padding: 1.25rem;
+}
+
+.setup { display: grid; gap: .75rem; width: min(100%, 30rem); }
+.setup p { color: var(--muted); }
+.setup input { width: 9rem; }
+.setup button { justify-self: start; }
+
+label { display: grid; gap: .32rem; font-size: .9rem; font-weight: 650; min-width: 0; }
+input, select {
+  padding: .45rem .62rem;
+  border: 1px solid #8a9a8d;
+  background: #fff;
+  color: var(--ink);
+  width: 100%;
+}
+button {
+  padding: .45rem .9rem;
+  border: 1px solid transparent;
+  background: var(--green);
+  color: white;
+  font-weight: 680;
+  white-space: nowrap;
+}
+button:hover { background: #174331; }
+button.secondary { background: var(--paper); color: var(--green); border-color: #91a496; }
+button.secondary:hover { background: #e9f2ea; }
+button:disabled { cursor: default; opacity: .5; }
+button.secondary:disabled:hover { background: var(--paper); }
+
+.toolbar, .create-form, .move-form { display: grid; align-items: end; gap: .75rem; }
+.toolbar { grid-template-columns: minmax(0, 1fr) auto; gap: 1.25rem; }
+.create-form { grid-template-columns: minmax(6rem, 11rem) minmax(8rem, 26rem) auto; justify-content: start; }
+.move-form { grid-template-columns: minmax(0, 1fr) auto; margin-top: .85rem; }
+.undo span { margin-right: .25rem; }
+
+.feedback {
+  min-height: 1.65rem;
+  margin: .65rem 0;
+  padding: .4rem .7rem;
+  border-radius: .4rem;
+  overflow-wrap: anywhere;
+}
+.feedback[data-status="success"] { background: #e5f0e6; color: #204c35; }
+.feedback[data-status="failure"] { background: #f9e9e2; color: #792e22; }
+.feedback[data-status="no_change"] { background: #eeeade; color: #564827; }
+
+.columns { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.column {
+  min-height: 18rem;
+  background: #eceee7;
+  border: 1px solid var(--line);
+  border-radius: .85rem;
+  padding: .9rem;
+}
+.column-heading {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: .5rem;
+  margin-bottom: .85rem;
+}
+.column-dot { background: #718079; border-radius: 50%; width: .52rem; height: .52rem; }
+[data-column="em_andamento"] .column-dot { background: #a76216; }
+[data-column="concluido"] .column-dot { background: #297358; }
+.count {
+  color: var(--muted);
+  background: var(--paper);
+  border-radius: 1rem;
+  padding: .18rem .53rem;
+  font-size: .8rem;
+  font-variant-numeric: tabular-nums;
+}
+.empty { padding: .75rem .5rem; color: var(--muted); font-size: .9rem; }
+.tasks { display: grid; list-style: none; margin: 0; padding: 0; gap: .7rem; }
+.task { background: var(--paper); border: 1px solid var(--line); border-radius: .63rem; padding: .8rem; }
+.task-id {
+  display: block;
+  color: var(--muted);
+  font: .78rem ui-monospace, monospace;
+  margin-bottom: .3rem;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 52rem) {
+  .columns { grid-template-columns: 1fr; }
+  .column { min-height: 0; }
+}
+
+@media (max-width: 38rem) {
+  .workspace { width: calc(100% - 2rem); }
+  .toolbar, .create-form { grid-template-columns: 1fr; }
+  .toolbar button { justify-self: start; }
+}
