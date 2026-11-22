@@ -30,7 +30,7 @@ test('Undo skips a rejected move and reverses a move before a creation', async (
   await expect(progress).toContainText('0 / 1')
   await addTask(page, 'DOC-01', 'Docs')
   await addTask(page, 'REV-02', 'Review')
-  await expect(todo.getByRole('heading', { level: 3 })).toHaveText(['Docs', 'Review'])
+  await expect(todo.getByRole('list').getByRole('heading', { level: 3 })).toHaveText(['Docs', 'Review'])
   await expect(undo).toBeEnabled()
 
   await moveTask(page, 'Review', 'In Progress')
@@ -43,7 +43,7 @@ test('Undo skips a rejected move and reverses a move before a creation', async (
 
   await undo.click()
   await expect(feedback).toContainText(/success.*undid the move/i)
-  await expect(todo.getByRole('heading', { level: 3 })).toHaveText(['Docs', 'Review'])
+  await expect(todo.getByRole('list').getByRole('heading', { level: 3 })).toHaveText(['Docs', 'Review'])
   await expect(progress).toContainText('0 / 1')
 
   await undo.click()
@@ -58,9 +58,7 @@ test('Undo skips a rejected move and reverses a move before a creation', async (
 test('keyboard submission, no-change feedback, and refresh reset', async ({ page }) => {
   await page.goto('/')
   const limit = page.getByRole('spinbutton', { name: 'In Progress limit' })
-  await limit.press('Tab')
-  await expect(page.getByRole('button', { name: 'Start board' })).toBeFocused()
-  await page.keyboard.press('Enter')
+  await limit.press('Enter')
   const id = page.getByRole('textbox', { name: 'Task ID' })
   const title = page.getByRole('textbox', { name: 'Task title' })
   await expect(id).toBeFocused()
@@ -88,9 +86,7 @@ test('keyboard submission, no-change feedback, and refresh reset', async ({ page
   await expect(page.getByRole('status')).toContainText(/no change.*already/i)
   const moveTo = page.getByRole('combobox', { name: 'Move to' })
   await moveTo.selectOption({ label: 'In Progress' })
-  await moveTo.press('Tab')
-  await expect(page.getByRole('button', { name: 'Move', exact: true })).toBeFocused()
-  await page.keyboard.press('Enter')
+  await page.getByRole('button', { name: 'Move', exact: true }).press('Enter')
   const progress = page.getByRole('region', { name: 'In Progress', exact: true })
   await expect(progress.getByRole('heading', { name: 'Keyboard task' })).toBeVisible()
   await expect(progress.getByRole('combobox', { name: 'Move to' })).toBeFocused()

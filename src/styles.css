@@ -117,7 +117,8 @@ button.secondary:disabled:hover { background: var(--paper); }
   font-variant-numeric: tabular-nums;
 }
 .empty { padding: .75rem .5rem; color: var(--muted); font-size: .9rem; }
-.tasks { display: grid; list-style: none; margin: 0; padding: 0; gap: .7rem; }
+.tasks { display: grid; list-style: disc; margin: 0; padding: 0; gap: .7rem; }
+.tasks > li::marker { color: transparent; }
 .task { background: var(--paper); border: 1px solid var(--line); border-radius: .63rem; padding: .8rem; }
 .task-id {
   display: block;

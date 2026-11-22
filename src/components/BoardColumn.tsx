@@ -21,8 +21,7 @@ export function BoardColumn({ column, tasks, limit, movedTaskId, onMove }: Board
         <span className="count">{count}</span>
       </header>
       {tasks.length === 0 ? <p className="empty">No tasks</p> : (
-        // biome-ignore lint/a11y/noRedundantRoles: Safari can hide lists with list-style: none from assistive technology.
-        <ul className="tasks" role="list">
+        <ul className="tasks">
           {tasks.map(task => (
             <TaskCard key={task.id} task={task} restoreFocus={movedTaskId === task.id} onMove={onMove} />
           ))}

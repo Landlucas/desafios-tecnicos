@@ -67,7 +67,11 @@ Show each test’s actual runner output. The expected result is one passing test
 
 “I also tried checking capacity before the same-column guard. The unit test then failed by reporting a capacity error for a move that left occupancy unchanged. Putting the same-column check first restored the expected result.”
 
-**Show** the spec’s acceptance table, then one relevant diff or test assertion. Use the table as a cue sheet. Close on how you reviewed the assertions or decisions, since the first three layers have already appeared on screen.
+**Show** the spec’s acceptance table and the task list in `BoardColumn.tsx` and `styles.css`.
+
+**Say** “My default is to ban comments written by or for coding agents. They go stale, humans skim past them, and a suppression comment can become an escape hatch that lets an agent justify a bad pattern. Here, I restored the native list markers and made them transparent in CSS. That let me remove the redundant ARIA role and its lint suppression while preserving the list structure. I keep requirements and rationale in the spec and use clear names and tests to express behavior.”
+
+**Show** one relevant diff or test assertion. Use the table as a cue sheet. Close on how you reviewed the assertions or decisions, since the first three layers have already appeared on screen.
 
 | Layer | What to show | What to say |
 | --- | --- | --- |
