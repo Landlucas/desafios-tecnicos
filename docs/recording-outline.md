@@ -4,11 +4,17 @@
 
 Before recording, open the app at the Board setup screen, the terminal in the solution directory, and editor tabs for `src/board.ts`, `src/board-screen-state.ts`, `biome.json`, `tests/work-board.spec.ts`, and `src/board.test.ts`. Check the recording text size and that Chromium can launch with `npm run test:e2e`.
 
-## 0:00–2:00 · Problem and approach
+## 0:00–2:00 · Open with the trust pyramid
 
-**Show** the setup screen and a brief view of the README.
+**0:00–1:20 — Show** the pyramid and trace it from Codebase down to Human review.
 
-**Say** “A team needs a work board that can recover from accidental changes. A new task starts in To Do. In Progress has a configurable limit, and Undo reverses the last change that actually happened. My focus is front-end engineering and the board’s state rules. A browser-only app lets me show those rules immediately. React owns the session and TypeScript owns the rules. Refreshing clears the board. I’ll show the workflow first, then use the five layers of the pyramid to explain how I worked with Codex.”
+**Say** “I built this work board with Codex. I used five layers to decide what I could trust in the delivery. A good codebase gives me the most leverage at the lowest recurring cost. Here, the pure TypeScript board rules, the React reducer, and the small components give the agent a clear place to make changes. I get that benefit on every edit.
+
+“Next, Biome and TypeScript catch code-pattern and type errors. Playwright verifies the user’s workflow, and Vitest isolates the rules. The spec, test plan, and README record what I asked for and what a reviewer should expect. Human review takes the most focused attention, so I use it to judge decisions and ask whether the tests prove the behavior I care about.”
+
+**1:20–2:00 — Show** Board setup and point to the In Progress limit.
+
+**Say** “The case asks for a work board that can recover from accidental changes. Tasks start in To Do, In Progress has a fixed limit for the session, and Undo reverses the last change that actually happened. This is a browser-only app, so I can show the rules directly. Watch what happens on the first Undo after a rejected move.”
 
 ## 2:00–7:00 · Live demo
 
@@ -61,7 +67,7 @@ Show each test’s actual runner output. The expected result is one passing test
 
 “I also tried checking capacity before the same-column guard. The unit test then failed by reporting a capacity error for a move that left occupancy unchanged. Putting the same-column check first restored the expected result.”
 
-**Show** the spec’s acceptance table, then one relevant diff or test assertion. Use the pyramid as the recap and explain the evidence for each layer.
+**Show** the spec’s acceptance table, then one relevant diff or test assertion. Use the table as a cue sheet. Close on how you reviewed the assertions or decisions, since the first three layers have already appeared on screen.
 
 | Layer | What to show | What to say |
 | --- | --- | --- |
