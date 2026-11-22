@@ -28,6 +28,8 @@ npm run build
 
 Playwright starts a local Vite server on port 4173. Keep that port free for the test run. Biome checks the source, tests, and Playwright configuration, including recommended React rules. TypeScript checks the project in strict mode. The build runs that type check before writing static assets to `dist/`.
 
+The [GitHub Actions workflow](.github/workflows/checks.yml) runs Biome, Vitest, the type-checked build, and Chromium Playwright on each push to `case-01-work-board`. See the [workflow runs](https://github.com/Landlucas/desafios-tecnicos/actions/workflows/checks.yml?query=branch%3Acase-01-work-board) for commit-level results.
+
 ## Reproduce the demo
 
 | Action | Expected result |
