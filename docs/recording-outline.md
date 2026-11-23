@@ -8,6 +8,8 @@ Before recording, open the app at the Board setup screen, the terminal in the so
 
 **0:00–1:20 — Show** the pyramid and trace it from Codebase down to Human review.
 
+![Inverted trust pyramid with five layers from top to bottom: codebase, static analysis, verification, prose, and human review. An arrow shows cost increasing downward.](assets/trust-pyramid.png)
+
 **Talking points**
 
 - Codex built the board with me. The pyramid is how I checked the delivery. — [README · AI use](../README.md#time-scope-and-ai-use)
