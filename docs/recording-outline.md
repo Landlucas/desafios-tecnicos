@@ -88,8 +88,13 @@ npm run typecheck
 - Biome catches conditional hooks and nested components. Codex tried both in a scratch snippet. — [`biome.json` · React rules](../biome.json#L14)
 - Custom rule. Reading `localStorage` in the board domain fails lint. Biome applies the plugin only to `src/board.ts`. — [`board-no-browser-globals.grit`](../lint/board-no-browser-globals.grit) · [`biome.json` · plugin scope](../biome.json#L3)
 - Strict TypeScript checks action and outcome types between modules. — [`tsconfig.json` · strict](../tsconfig.json#L8) · [`board.ts` · `Action` and `Outcome`](../src/board.ts#L16)
+- GitHub Actions runs the checks on each push to `main`. Show the results for the submission commit. — [`checks.yml` · push trigger](../.github/workflows/checks.yml#L3) · [Workflow runs](https://github.com/Landlucas/desafios-tecnicos/actions/workflows/checks.yml?query=branch%3Amain)
 
 **Say** “Biome checks code patterns, including React’s hook rules and components defined inside other components. Codex verified that it rejects both in a small throwaway snippet. TypeScript checks contracts between modules, such as what a board action accepts. Both checks run without starting the browser. We also wrote one project-specific rule. If an agent adds a read from browser storage inside the board module, Biome flags it before the app runs. The rule names the boundary and tells us to pass data in as an argument.”
+
+**Show** the Actions run for the submission commit. Point to **Lint with Biome** and **Type-check and build**, then use the test steps to transition into verification.
+
+**Say** “GitHub Actions runs lint, the type-checked build, Vitest, and Chromium Playwright on each push to `main`. That gives me check results tied to the exact commit I’m reviewing or submitting.”
 
 If time allows, use the [scratch lint demo](#optional-custom-lint-demo) to show the actual diagnostic.
 
@@ -105,13 +110,10 @@ npm test -- -t 'same-column move at capacity'
 - Playwright. Docs stays put, Undo #1 restores Review, Undo #2 removes it. — [`work-board.spec.ts` · Undo workflow](../tests/work-board.spec.ts#L17)
 - Vitest. At capacity, a same-column move is a no-op and history stays intact. — [`board.test.ts` · same-column no-op](../src/board.test.ts#L65)
 - Show the terminal results. One targeted test passes per command. — [`work-board.spec.ts` · Undo workflow](../tests/work-board.spec.ts#L17) · [`board.test.ts` · same-column no-op](../src/board.test.ts#L65)
-- Optional. Show the GitHub Actions run for the submission commit on `main`. — [`checks.yml` · workflow](../.github/workflows/checks.yml)
 
 **Say** “Playwright checks that Docs remains in To Do after the rejection. The first Undo puts Review back and releases the capacity slot. The second removes Review while keeping Docs. These assertions exercise the UI, reducer, and history together. The targeted Vitest case isolates the full-column no-op. It checks the outcome, the original board identity, and the next Undo.”
 
 Show each test’s actual runner output. The expected result is one passing test per command. In the full verification run, Vitest passed 27 checks and Playwright passed both Chromium scenarios.
-
-If time allows, show the GitHub Actions run for the submitted commit. It repeats the static checks, build, Vitest, and Chromium Playwright on each push to `main`.
 
 ## 17:00–20:00 · Decisions, scope, and human review
 
