@@ -6,6 +6,11 @@
       "includes": ["src/board.ts"]
     }
   ],
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  },
   "linter": {
     "domains": {
       "react": "recommended"

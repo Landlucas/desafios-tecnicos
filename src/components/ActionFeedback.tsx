@@ -1,4 +1,5 @@
 import type { BoardFeedback } from '../board-screen-state'
+import { feedbackClass, feedbackToneClasses } from '../ui-classes'
 
 const messages: Record<BoardFeedback['code'], string> = {
   created: 'Task added to To Do.',
@@ -22,7 +23,7 @@ const statusLabels: Record<BoardFeedback['status'], string> = {
 
 export function ActionFeedback({ feedback }: { feedback: BoardFeedback | null }) {
   return (
-    <p className="feedback" role="status" data-status={feedback?.status}>
+    <p className={feedback ? `${feedbackClass} ${feedbackToneClasses[feedback.status]}` : feedbackClass} role="status" data-status={feedback?.status}>
       {feedback ? <><strong>{statusLabels[feedback.status]}.</strong> {messages[feedback.code]}</> : null}
     </p>
   )

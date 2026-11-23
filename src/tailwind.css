@@ -1,0 +1,13 @@
+@import "tailwindcss" source(none);
+@source "./";
+@source "../index.html";
+
+@theme {
+  --font-board: "Avenir Next", Avenir, system-ui, sans-serif;
+  --color-canvas: #f5f3ee;
+  --color-ink: #172820;
+  --color-muted: #536258;
+  --color-brand: #215641;
+  --color-line: #d5dbd1;
+  --color-paper: #fffefa;
+}

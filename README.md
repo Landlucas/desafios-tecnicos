@@ -15,7 +15,7 @@ npm ci
 npm run dev
 ```
 
-Open the localhost URL printed by Vite. The board runs entirely in the browser. In a separate terminal:
+Open the localhost URL printed by Vite. The board runs entirely in the browser. Vite compiles Tailwind utilities used by the React components. In a separate terminal:
 
 ```sh
 npx playwright install chromium
