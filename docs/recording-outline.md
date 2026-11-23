@@ -150,12 +150,12 @@ Show each test’s actual runner output. The expected result is one passing test
 
 **Say** “My default is to ban comments written by or for coding agents. They go stale, humans skim past them, and a suppression comment can become an escape hatch that lets an agent justify a bad pattern. Here, I restored the native list markers and used Tailwind’s `marker:text-transparent` utility to hide them visually. That let me remove the redundant ARIA role and its lint suppression while preserving the list structure. I keep requirements and rationale in the spec and use clear names and tests to express behavior.”
 
-**Show** one relevant diff or test assertion. Use the table as a cue sheet. Close on how you reviewed the assertions or decisions, since the first three layers have already appeared on screen.
+**Show** the first Undo check in Playwright. Point to the two cards back in To Do and the `0 / 1` capacity count.
 
 **Talking points**
 
-- Show one diff or assertion you personally reviewed. — [`work-board.spec.ts` · first Undo assertion](../tests/work-board.spec.ts#L44)
-- Tie it to the brief. Predict the outcome, run the demo, and check what the test proves. — [Official brief](../casos/01-quadro-de-trabalho.md#L11) · [`work-board.spec.ts` · Undo workflow](../tests/work-board.spec.ts#L17)
+- Undo #1 returns Review to To Do and frees the slot. The rejected move stayed out of history. — [`work-board.spec.ts` · Undo move](../tests/work-board.spec.ts#L44)
+- Undo #2 removes Review and leaves Docs. Check that Undo reverses the correct creation. — [`work-board.spec.ts` · Undo creation](../tests/work-board.spec.ts#L49)
 - Use the full pyramid recap if time allows.
 
 | Layer | What to show | What to say |
@@ -164,7 +164,7 @@ Show each test’s actual runner output. The expected result is one passing test
 | Static analysis | Biome and strict TypeScript | “These give fast feedback on invalid patterns and type errors before I run the app.” |
 | Verification | Playwright’s rejected move and two Undos, with Vitest as the domain-level complement | “Playwright shows whether the user’s workflow actually works. Vitest isolates edge cases like moving within a full column.” |
 | Prose | Spec, test plan, and README | “I gave Codex the brief and acceptance criteria, then asked it for a focused implementation with test evidence. The same artifact-based workflow would work with Claude Code.” |
-| Human review | The capacity guard and the two Undo assertions | “I would read the diff against the brief, predict and rerun the demo, and check whether the assertions prove the intended behavior.” |
+| Human review | The Playwright checks for the rejected move and both Undos | “I’d check that Docs stays in To Do after the rejection. The first Undo brings Review back and frees the slot, so I can see the rejected move stayed out of history. The second Undo removes Review and leaves Docs, so I can see the correct creation was reversed.” |
 
 For the recording, use “I reviewed” only after doing that pass yourself. Codex was the agent used for this project.
 
