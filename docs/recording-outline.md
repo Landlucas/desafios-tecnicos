@@ -140,15 +140,16 @@ Show each test’s actual runner output. The expected result is one passing test
 
 **Say** “I kept the existing Vite build and used one `useMemo` for column sorting. React Compiler can automate memoization, but it adds a build step. For this small board, I’d profile a larger workload before adding it. The exercise covers a single-person, in-memory session. Refresh resets the board, and the history supports Undo. Accounts, real-time collaboration, persistent storage, standalone deletion, and Redo are outside the exercise.”
 
-**18:45–20:00 — Show** the spec’s acceptance table and the task list in `BoardColumn.tsx` and the marker utility in `TaskCard.tsx`.
+**18:45–20:00 — Show** the [suppression-removal diff](https://github.com/Landlucas/desafios-tecnicos/commit/c736cb285bf468cf0a643c80eff304cb86c6b3e3). Point to the two lines removed in `BoardColumn.tsx` and the list marker change in `styles.css`. Then show the current marker utility in `TaskCard.tsx`.
 
 **Talking points**
 
 - AI comments go stale, get skimmed, and can become an escape hatch.
-- Concrete example. Transparent native list markers replaced the ARIA role and lint suppression. — [`BoardColumn.tsx` · task list](../src/components/BoardColumn.tsx) · [`TaskCard.tsx` · list markers](../src/components/TaskCard.tsx)
+- Concrete example. Restore native list markers, hide the bullets visually, and remove the ARIA role and suppression. — [Original fix · `c736cb2`](https://github.com/Landlucas/desafios-tecnicos/commit/c736cb285bf468cf0a643c80eff304cb86c6b3e3)
+- The Tailwind migration kept both styles. — [`BoardColumn.tsx` · `list-disc`](../src/components/BoardColumn.tsx) · [`TaskCard.tsx` · `marker:text-transparent`](../src/components/TaskCard.tsx#L24)
 - Put intent in the spec. Express behavior through names and tests. — [Spec](superpowers/specs/2026-11-22-work-board-design.md) · [`work-board.spec.ts` · Undo workflow](../tests/work-board.spec.ts#L17)
 
-**Say** “My default is to ban comments written by or for coding agents. They go stale, humans skim past them, and a suppression comment can become an escape hatch that lets an agent justify a bad pattern. Here, I restored the native list markers and used Tailwind’s `marker:text-transparent` utility to hide them visually. That let me remove the redundant ARIA role and its lint suppression while preserving the list structure. I keep requirements and rationale in the spec and use clear names and tests to express behavior.”
+**Say** “My default is to ban comments written by or for coding agents. They go stale, humans skim past them, and a suppression comment can become an escape hatch that lets an agent justify a bad pattern. In this diff, I restored the native list markers and made the bullets transparent in CSS. That preserved the list structure and let me remove the explicit ARIA role and its lint suppression. The later Tailwind migration kept the same styling with `list-disc` and `marker:text-transparent`. I keep requirements and rationale in the spec and use clear names and tests to express behavior.”
 
 **Show** the first Undo check in Playwright. Point to the two cards back in To Do and the `0 / 1` capacity count.
 
