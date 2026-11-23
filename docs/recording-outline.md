@@ -121,11 +121,11 @@ Show each test’s actual runner output. The expected result is one passing test
 
 **Talking points**
 
-- Inverse actions keep history entries small. Snapshots simplify complex restores. — [`board.ts` · `InverseAction`](../src/board.ts#L5) · [README · Investigated decisions](../README.md#two-investigated-decisions)
-- All three Undos matched the prior task collections in the comparison. — [README · Investigated decisions](../README.md#two-investigated-decisions) · [`board.test.ts` · restore prior boards](../src/board.test.ts#L116)
+- Undo a move. Save Review’s previous column so Undo can put it back. — [`board.ts` · `moveTask`](../src/board.ts#L75)
+- Undo a creation. Save the new card’s ID so Undo can remove it. — [`board.ts` · `createTask`](../src/board.ts#L60) · [`board.ts` · `undo`](../src/board.ts#L93)
 - Reversing the guards broke the full-column no-op test. Restoring the order fixed it. — [`board.ts` · `moveTask`](../src/board.ts#L75) · [`board.test.ts` · same-column no-op](../src/board.test.ts#L65)
 
-**Say** “I compared the inverse-action results with snapshots of the same sequence. All three Undos matched the previous task collections. Inverse actions keep each record small and explicit. They do require a reversal for each supported operation. Snapshots would be easier to reason about if future actions changed many fields at once.”
+**Say** “Remember what happened when I clicked Undo twice? When I moved Review, the board saved its previous column so Undo could put it back. When I created Review, the board saved its ID so Undo could remove it. The history stores just enough information to reverse each change.”
 
 “I also tried checking capacity before the same-column guard. The unit test then failed by reporting a capacity error for a move that left occupancy unchanged. Putting the same-column check first restored the expected result.”
 
