@@ -67,11 +67,15 @@ Before recording, open the app at the Board setup screen, the terminal in the so
 - Successful changes append one inverse. Rejections and no-ops keep history intact. — [`board.ts` · `commit`](../src/board.ts#L52) · [`board.ts` · `moveTask`](../src/board.ts#L75)
 - Undo pops the latest inverse. Restore a column or remove a creation. — [`board.ts` · `undo`](../src/board.ts#L93)
 - Pure domain rules and small UI components give Codex a clear place to edit. — [`board.ts` · `applyAction`](../src/board.ts#L106) · [`TaskCard.tsx` · `TaskCard`](../src/components/TaskCard.tsx#L16)
+- One board owns its state. React’s `useReducer` is enough for create, move, and Undo. Consider Zustand if several independent views need a shared store. — [`BoardScreen.tsx` · `useReducer`](../src/components/BoardScreen.tsx#L11)
+- Small forms need only native inputs, `FormData`, and domain validation. Consider React Hook Form if the forms grow more complex. — [`TaskForm.tsx` · `handleSubmit`](../src/components/TaskForm.tsx#L9) · [`board.ts` · `createTask`](../src/board.ts#L60)
 - Tailwind styles the components. Vite compiles the utilities and the theme holds the shared colors and font. — [`vite.config.ts`](../vite.config.ts) · [`tailwind.css` · theme](../src/tailwind.css#L5) · [`TaskCard.tsx` · card utilities](../src/components/TaskCard.tsx#L24)
 
 **Say** “The board carries the tasks, the fixed limit, and a stack of inverse actions. A move validates the task and destination, then checks whether the destination is already the current column. Only a move entering In Progress checks capacity. A successful change uses `commit` to produce a new board and append the inverse. Failure and no change return the existing board. Undo pops the last inverse and either removes a creation or restores a column. A LIFO restore returns to a previously valid state.”
 
 “In React, the reducer sends actions through `applyAction`. Each component has a focused responsibility and the UI turns the result into English feedback. Tailwind puts the styling utilities beside the markup, and Vite compiles them with the shared theme. The domain stays pure, so Codex can change a UI component without having to touch the board rules. The three column IDs and the empty Undo code retain the case literals.”
+
+“One design choice was to keep the dependencies proportional to the app. One board owns its state, so React’s `useReducer` covers creating, moving, and undoing tasks. The forms have just a few fields, so I read them with `FormData` and validate in TypeScript. I’d consider Zustand if several views needed a shared store, or React Hook Form if the forms grew more complex.”
 
 ## 12:00–17:00 · Static analysis and verification layers
 
