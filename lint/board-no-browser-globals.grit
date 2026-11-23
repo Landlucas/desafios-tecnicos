@@ -1,0 +1,12 @@
+engine biome(1.0)
+
+language js
+
+JsReferenceIdentifier() as $reference where {
+    $reference <: r"^(?:document|window|localStorage|sessionStorage|globalThis|self)$",
+    register_diagnostic(
+        span = $reference,
+        message = "Keep browser and global state out of the board rules. Pass the data in as an argument.",
+        severity = "error"
+    )
+}

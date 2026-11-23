@@ -1,5 +1,11 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "plugins": [
+    {
+      "path": "./lint/board-no-browser-globals.grit",
+      "includes": ["src/board.ts"]
+    }
+  ],
   "linter": {
     "domains": {
       "react": "recommended"

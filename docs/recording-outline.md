@@ -72,7 +72,7 @@ Before recording, open the app at the Board setup screen, the terminal in the so
 
 ## 12:00–17:00 · Static analysis and verification layers
 
-**12:00–13:30** — Show `biome.json` and strict mode in `tsconfig.json`. Run:
+**12:00–13:30** — Show `biome.json`, the custom Biome rule, and strict mode in `tsconfig.json`. Run:
 
 ```sh
 npm run lint
@@ -82,10 +82,13 @@ npm run typecheck
 **Talking points**
 
 - Run `npm run lint` and `npm run typecheck`. — [`package.json` · scripts](../package.json#L7)
-- Biome catches conditional hooks and nested components. Codex tried both in a scratch snippet. — [`biome.json` · React rules](../biome.json#L3)
+- Biome catches conditional hooks and nested components. Codex tried both in a scratch snippet. — [`biome.json` · React rules](../biome.json#L9)
+- Custom rule. Reading `localStorage` in the board domain fails lint. Biome applies the plugin only to `src/board.ts`. — [`board-no-browser-globals.grit`](../lint/board-no-browser-globals.grit) · [`biome.json` · plugin scope](../biome.json#L3)
 - Strict TypeScript checks action and outcome types between modules. — [`tsconfig.json` · strict](../tsconfig.json#L8) · [`board.ts` · `Action` and `Outcome`](../src/board.ts#L16)
 
-**Say** “Biome checks code patterns, including React’s hook rules and components defined inside other components. Codex verified that it rejects both in a small throwaway snippet. TypeScript checks contracts between modules, such as what a board action accepts. Both checks run without starting the browser.”
+**Say** “Biome checks code patterns, including React’s hook rules and components defined inside other components. Codex verified that it rejects both in a small throwaway snippet. TypeScript checks contracts between modules, such as what a board action accepts. Both checks run without starting the browser. We also wrote one project-specific rule. If an agent adds a read from browser storage inside the board module, Biome flags it before the app runs. The rule names the boundary and tells us to pass data in as an argument.”
+
+If time allows, use the [scratch lint demo](#optional-custom-lint-demo) to show the actual diagnostic.
 
 **13:30–17:00** — Show the Playwright test at its failure-message and Undo assertions, then run:
 
@@ -161,3 +164,19 @@ If time allows, show the GitHub Actions run for the submitted commit. It repeats
 For the recording, use “I reviewed” only after doing that pass yourself. Codex was the agent used for this project.
 
 Keep the repository link, full commit hash, recording link, and time spent handy for your submission.
+
+## Optional custom lint demo
+
+Run from the repository root after `npm ci`. This uses the project’s config and rule in a temporary directory.
+
+```sh
+board_biome="$PWD/node_modules/.bin/biome"
+board_lint_demo=$(mktemp -d)
+cp biome.json "$board_lint_demo/"
+cp -R lint "$board_lint_demo/"
+mkdir "$board_lint_demo/src"
+printf '%s\n' "export const lastBoard = localStorage.getItem('board')" > "$board_lint_demo/src/board.ts"
+(cd "$board_lint_demo" && "$board_biome" lint src/board.ts)
+```
+
+Biome should exit with an error highlighting `localStorage`. Move the same scratch file to `src/main.ts` inside the temporary directory and lint that path to show the file scope. The rule checks direct references to the named objects. Pure domain behavior also depends on code review and tests.

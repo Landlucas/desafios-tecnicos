@@ -21,3 +21,5 @@
 
 - Give each component a dedicated file. The app shell switches between setup and the board screen. The board screen owns the reducer and delegates form, column, card, and feedback rendering.
 - Keep draft values in their forms. A successful creation clears the draft and focuses the ID field. A failed creation preserves the draft. Successful moves keep keyboard focus on the moved card.
+
+- Keep browser and global state out of `src/board.ts`. A scoped Biome plugin flags direct references to the browser and global objects listed in the rule.
