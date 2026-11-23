@@ -10,12 +10,12 @@ Before recording, open the app at the Board setup screen, the terminal in the so
 
 **Talking points**
 
-- Codex built the board with me. The pyramid is how I checked the delivery.
-- Highest leverage, lowest recurring cost. Pure rules, one reducer, small components.
-- Fast checks. Biome and TypeScript.
-- Behavior. Playwright for the workflow, Vitest for the rules.
-- Written intent. Spec, test plan, README.
-- Human judgment. Read the diff and ask what the tests prove.
+- Codex built the board with me. The pyramid is how I checked the delivery. — [README · AI use](../README.md#time-scope-and-ai-use)
+- Highest leverage, lowest recurring cost. Pure rules, one reducer, small components. — [`board.ts`](../src/board.ts) · [`board-screen-state.ts` · `boardScreenReducer`](../src/board-screen-state.ts#L16) · [`TaskCard.tsx`](../src/components/TaskCard.tsx#L15)
+- Fast checks. Biome and TypeScript. — [`biome.json`](../biome.json) · [`tsconfig.json`](../tsconfig.json#L8)
+- Behavior. Playwright for the workflow, Vitest for the rules. — [`work-board.spec.ts` · Undo workflow](../tests/work-board.spec.ts#L17) · [`board.test.ts`](../src/board.test.ts)
+- Written intent. Spec, test plan, README. — [Spec](superpowers/specs/2026-11-22-work-board-design.md) · [Test plan](superpowers/plans/2026-11-22-work-board-plan.md) · [README](../README.md)
+- Human judgment. Read the diff and ask what the tests prove. — [`work-board.spec.ts` · Undo workflow](../tests/work-board.spec.ts#L17)
 
 **Say** “I built this work board with Codex. I used five layers to decide what I could trust in the delivery. A good codebase gives me the most leverage at the lowest recurring cost. Here, the pure TypeScript board rules, the React reducer, and the small components give the agent a clear place to make changes. I get that benefit on every edit.
 
@@ -25,10 +25,10 @@ Before recording, open the app at the Board setup screen, the terminal in the so
 
 **Talking points**
 
-- Recover from accidental changes.
-- Browser-only session. New tasks start in To Do.
-- Fixed In Progress limit. Undo reverses the last successful change.
-- Set up the demo question. What does Undo do after a rejected move?
+- Recover from accidental changes. — [Official brief](../casos/01-quadro-de-trabalho.md#L11)
+- Browser-only session. New tasks start in To Do. — [`App.tsx` · `App`](../src/App.tsx#L5) · [`board.ts` · `createTask`](../src/board.ts#L60)
+- Fixed In Progress limit. Undo reverses the last successful change. — [`SetupForm.tsx` · `SetupForm`](../src/components/SetupForm.tsx#L4) · [`board.ts` · `undo`](../src/board.ts#L93)
+- Set up the demo question. What does Undo do after a rejected move? — [`work-board.spec.ts` · Undo workflow](../tests/work-board.spec.ts#L17)
 
 **Say** “The case asks for a work board that can recover from accidental changes. Tasks start in To Do, In Progress has a fixed limit for the session, and Undo reverses the last change that actually happened. This is a browser-only app, so I can show the rules directly. Watch what happens on the first Undo after a rejected move.”
 
@@ -38,12 +38,12 @@ Before recording, open the app at the Board setup screen, the terminal in the so
 
 **Talking points**
 
-- Set limit to 1. Add Docs (`DOC-01`), then Review (`REV-02`).
-- Move Review to In Progress. Show 1/1 and Undo available.
-- Predict the Docs rejection before clicking Move. Point to the message and both cards.
-- Predict Undo #1. Review returns to To Do and frees the slot.
-- Predict Undo #2. Review disappears and Docs stays.
-- Optional Undo #3. Docs disappears and Undo is disabled.
+- Set limit to 1. Add Docs (`DOC-01`), then Review (`REV-02`). — [`work-board.spec.ts` · setup and creation](../tests/work-board.spec.ts#L19)
+- Move Review to In Progress. Show 1/1 and Undo available. — [`work-board.spec.ts` · Review fills the slot](../tests/work-board.spec.ts#L36)
+- Predict the Docs rejection before clicking Move. Point to the message and both cards. — [`work-board.spec.ts` · Docs rejection](../tests/work-board.spec.ts#L39) · [`ActionFeedback.tsx` · `ActionFeedback`](../src/components/ActionFeedback.tsx#L23)
+- Predict Undo #1. Review returns to To Do and frees the slot. — [`work-board.spec.ts` · Undo move](../tests/work-board.spec.ts#L44)
+- Predict Undo #2. Review disappears and Docs stays. — [`work-board.spec.ts` · Undo creation](../tests/work-board.spec.ts#L49)
+- Optional Undo #3. Docs disappears and Undo is disabled. — [`work-board.spec.ts` · empty history](../tests/work-board.spec.ts#L53) · [`board.ts` · `canUndo`](../src/board.ts#L44)
 
 | Action | What to say |
 | --- | --- |
@@ -60,11 +60,11 @@ Before recording, open the app at the Board setup screen, the terminal in the so
 
 **Talking points**
 
-- Follow one action. React reducer → `applyAction` → board and feedback.
-- Guard order. Validate inputs, handle same-column moves, then check capacity.
-- Successful changes append one inverse. Rejections and no-ops keep history intact.
-- Undo pops the latest inverse. Restore a column or remove a creation.
-- Pure domain rules and small UI components give Codex a clear place to edit.
+- Follow one action. React reducer → `applyAction` → board and feedback. — [`board-screen-state.ts` · `boardScreenReducer`](../src/board-screen-state.ts#L16) · [`board.ts` · `applyAction`](../src/board.ts#L106)
+- Guard order. Validate inputs, handle same-column moves, then check capacity. — [`board.ts` · `moveTask`](../src/board.ts#L75)
+- Successful changes append one inverse. Rejections and no-ops keep history intact. — [`board.ts` · `commit`](../src/board.ts#L52) · [`board.ts` · `moveTask`](../src/board.ts#L75)
+- Undo pops the latest inverse. Restore a column or remove a creation. — [`board.ts` · `undo`](../src/board.ts#L93)
+- Pure domain rules and small UI components give Codex a clear place to edit. — [`board.ts` · `applyAction`](../src/board.ts#L106) · [`TaskCard.tsx` · `TaskCard`](../src/components/TaskCard.tsx#L15)
 
 **Say** “The board carries the tasks, the fixed limit, and a stack of inverse actions. A move validates the task and destination, then checks whether the destination is already the current column. Only a move entering In Progress checks capacity. A successful change uses `commit` to produce a new board and append the inverse. Failure and no change return the existing board. Undo pops the last inverse and either removes a creation or restores a column. A LIFO restore returns to a previously valid state.”
 
@@ -81,9 +81,9 @@ npm run typecheck
 
 **Talking points**
 
-- Run `npm run lint` and `npm run typecheck`.
-- Biome catches conditional hooks and nested components. Codex tried both in a scratch snippet.
-- Strict TypeScript checks action and outcome types between modules.
+- Run `npm run lint` and `npm run typecheck`. — [`package.json` · scripts](../package.json#L7)
+- Biome catches conditional hooks and nested components. Codex tried both in a scratch snippet. — [`biome.json` · React rules](../biome.json#L3)
+- Strict TypeScript checks action and outcome types between modules. — [`tsconfig.json` · strict](../tsconfig.json#L8) · [`board.ts` · `Action` and `Outcome`](../src/board.ts#L16)
 
 **Say** “Biome checks code patterns, including React’s hook rules and components defined inside other components. Codex verified that it rejects both in a small throwaway snippet. TypeScript checks contracts between modules, such as what a board action accepts. Both checks run without starting the browser.”
 
@@ -96,10 +96,10 @@ npm test -- -t 'same-column move at capacity'
 
 **Talking points**
 
-- Playwright. Docs stays put, Undo #1 restores Review, Undo #2 removes it.
-- Vitest. At capacity, a same-column move is a no-op and history stays intact.
-- Show the terminal results. One targeted test passes per command.
-- Optional. Show the GitHub Actions run for the submission commit on `main`.
+- Playwright. Docs stays put, Undo #1 restores Review, Undo #2 removes it. — [`work-board.spec.ts` · Undo workflow](../tests/work-board.spec.ts#L17)
+- Vitest. At capacity, a same-column move is a no-op and history stays intact. — [`board.test.ts` · same-column no-op](../src/board.test.ts#L65)
+- Show the terminal results. One targeted test passes per command. — [`work-board.spec.ts` · Undo workflow](../tests/work-board.spec.ts#L17) · [`board.test.ts` · same-column no-op](../src/board.test.ts#L65)
+- Optional. Show the GitHub Actions run for the submission commit on `main`. — [`checks.yml` · workflow](../.github/workflows/checks.yml)
 
 **Say** “Playwright checks that Docs remains in To Do after the rejection. The first Undo puts Review back and releases the capacity slot. The second removes Review while keeping Docs. These assertions exercise the UI, reducer, and history together. The targeted Vitest case isolates the full-column no-op. It checks the outcome, the original board identity, and the next Undo.”
 
@@ -113,9 +113,9 @@ If time allows, show the GitHub Actions run for the submitted commit. It repeats
 
 **Talking points**
 
-- Inverse actions keep history entries small. Snapshots simplify complex restores.
-- All three Undos matched the prior task collections in the comparison.
-- Reversing the guards broke the full-column no-op test. Restoring the order fixed it.
+- Inverse actions keep history entries small. Snapshots simplify complex restores. — [`board.ts` · `InverseAction`](../src/board.ts#L5) · [README · Investigated decisions](../README.md#two-investigated-decisions)
+- All three Undos matched the prior task collections in the comparison. — [README · Investigated decisions](../README.md#two-investigated-decisions) · [`board.test.ts` · restore prior boards](../src/board.test.ts#L116)
+- Reversing the guards broke the full-column no-op test. Restoring the order fixed it. — [`board.ts` · `moveTask`](../src/board.ts#L75) · [`board.test.ts` · same-column no-op](../src/board.test.ts#L65)
 
 **Say** “I compared the inverse-action results with snapshots of the same sequence. All three Undos matched the previous task collections. Inverse actions keep each record small and explicit. They do require a reversal for each supported operation. Snapshots would be easier to reason about if future actions changed many fields at once.”
 
@@ -125,10 +125,10 @@ If time allows, show the GitHub Actions run for the submitted commit. It repeats
 
 **Talking points**
 
-- One `useMemo` reuses the sorted columns while board state stays the same.
-- React Compiler automates memoization. Profile a larger workload before adding the build step.
-- Scope. One user, in-memory session, Undo, and reset on refresh.
-- Outside the exercise. Accounts, live collaboration, persistence, deletion, and Redo.
+- One `useMemo` reuses the sorted columns while board state stays the same. — [`BoardScreen.tsx` · `columnTasks`](../src/components/BoardScreen.tsx#L12)
+- React Compiler automates memoization. Profile a larger workload before adding the build step. — [`BoardScreen.tsx` · `columnTasks`](../src/components/BoardScreen.tsx#L12)
+- Scope. One user, in-memory session, Undo, and reset on refresh. — [`App.tsx` · `App`](../src/App.tsx#L5) · [`work-board.spec.ts` · refresh reset](../tests/work-board.spec.ts#L93)
+- Outside the exercise. Accounts, live collaboration, persistence, deletion, and Redo. — [Official brief · scope](../casos/01-quadro-de-trabalho.md#L23)
 
 **Say** “I kept the existing Vite build and used one `useMemo` for column sorting. React Compiler can automate memoization, but it adds a build step. For this small board, I’d profile a larger workload before adding it. The exercise covers a single-person, in-memory session. Refresh resets the board, and the history supports Undo. Accounts, real-time collaboration, persistent storage, standalone deletion, and Redo are outside the exercise.”
 
@@ -137,8 +137,8 @@ If time allows, show the GitHub Actions run for the submitted commit. It repeats
 **Talking points**
 
 - AI comments go stale, get skimmed, and can become an escape hatch.
-- Concrete example. Transparent native list markers replaced the ARIA role and lint suppression.
-- Put intent in the spec. Express behavior through names and tests.
+- Concrete example. Transparent native list markers replaced the ARIA role and lint suppression. — [`BoardColumn.tsx` · task list](../src/components/BoardColumn.tsx#L24) · [`styles.css` · list markers](../src/styles.css#L120)
+- Put intent in the spec. Express behavior through names and tests. — [Spec](superpowers/specs/2026-11-22-work-board-design.md) · [`work-board.spec.ts` · Undo workflow](../tests/work-board.spec.ts#L17)
 
 **Say** “My default is to ban comments written by or for coding agents. They go stale, humans skim past them, and a suppression comment can become an escape hatch that lets an agent justify a bad pattern. Here, I restored the native list markers and made them transparent in CSS. That let me remove the redundant ARIA role and its lint suppression while preserving the list structure. I keep requirements and rationale in the spec and use clear names and tests to express behavior.”
 
@@ -146,8 +146,8 @@ If time allows, show the GitHub Actions run for the submitted commit. It repeats
 
 **Talking points**
 
-- Show one diff or assertion you personally reviewed.
-- Tie it to the brief. Predict the outcome, run the demo, and check what the test proves.
+- Show one diff or assertion you personally reviewed. — [`work-board.spec.ts` · first Undo assertion](../tests/work-board.spec.ts#L44)
+- Tie it to the brief. Predict the outcome, run the demo, and check what the test proves. — [Official brief](../casos/01-quadro-de-trabalho.md#L11) · [`work-board.spec.ts` · Undo workflow](../tests/work-board.spec.ts#L17)
 - Use the full pyramid recap if time allows.
 
 | Layer | What to show | What to say |
