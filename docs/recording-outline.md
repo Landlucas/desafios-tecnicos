@@ -67,15 +67,11 @@ Before recording, open the app at the Board setup screen, the terminal in the so
 - Successful changes append one inverse. Rejections and no-ops keep history intact. — [`board.ts` · `commit`](../src/board.ts#L52) · [`board.ts` · `moveTask`](../src/board.ts#L75)
 - Undo pops the latest inverse. Restore a column or remove a creation. — [`board.ts` · `undo`](../src/board.ts#L93)
 - Pure domain rules and small UI components give Codex a clear place to edit. — [`board.ts` · `applyAction`](../src/board.ts#L106) · [`TaskCard.tsx` · `TaskCard`](../src/components/TaskCard.tsx#L16)
-- One board owns its state. React’s `useReducer` is enough for create, move, and Undo. Consider Zustand if several independent views need a shared store. — [`BoardScreen.tsx` · `useReducer`](../src/components/BoardScreen.tsx#L11)
-- Small forms need only native inputs, `FormData`, and domain validation. Consider React Hook Form if the forms grow more complex. — [`TaskForm.tsx` · `handleSubmit`](../src/components/TaskForm.tsx#L9) · [`board.ts` · `createTask`](../src/board.ts#L60)
 - Tailwind styles the components. Vite compiles the utilities and the theme holds the shared colors and font. — [`vite.config.ts`](../vite.config.ts) · [`tailwind.css` · theme](../src/tailwind.css#L5) · [`TaskCard.tsx` · card utilities](../src/components/TaskCard.tsx#L24)
 
 **Say** “The board carries the tasks, the fixed limit, and a stack of inverse actions. A move validates the task and destination, then checks whether the destination is already the current column. Only a move entering In Progress checks capacity. A successful change uses `commit` to produce a new board and append the inverse. Failure and no change return the existing board. Undo pops the last inverse and either removes a creation or restores a column. A LIFO restore returns to a previously valid state.”
 
 “In React, the reducer sends actions through `applyAction`. Each component has a focused responsibility and the UI turns the result into English feedback. Tailwind puts the styling utilities beside the markup, and Vite compiles them with the shared theme. The domain stays pure, so Codex can change a UI component without having to touch the board rules. The three column IDs and the empty Undo code retain the case literals.”
-
-“One design choice was to keep the dependencies proportional to the app. One board owns its state, so React’s `useReducer` covers creating, moving, and undoing tasks. The forms have just a few fields, so I read them with `FormData` and validate in TypeScript. I’d consider Zustand if several views needed a shared store, or React Hook Form if the forms grew more complex.”
 
 ## 12:00–17:00 · Static analysis and verification layers
 
@@ -133,16 +129,18 @@ Show each test’s actual runner output. The expected result is one passing test
 
 “I also tried checking capacity before the same-column guard. The unit test then failed by reporting a capacity error for a move that left occupancy unchanged. Putting the same-column check first restored the expected result.”
 
-**18:00–18:45 — Show** the `useMemo` in `src/components/BoardScreen.tsx`. Point out that it reuses the sorted columns while the board state stays the same.
+**18:00–18:45 — Show** `useReducer` and `useMemo` in `src/components/BoardScreen.tsx`, then point to `FormData` in `src/components/TaskForm.tsx`.
 
 **Talking points**
 
+- One board owns its state. React’s `useReducer` is enough for create, move, and Undo. Consider Zustand if several independent views need a shared store. — [`BoardScreen.tsx` · `useReducer`](../src/components/BoardScreen.tsx#L11)
+- Small forms need only native inputs, `FormData`, and domain validation. Consider React Hook Form if the forms grow more complex. — [`TaskForm.tsx` · `handleSubmit`](../src/components/TaskForm.tsx#L9) · [`board.ts` · `createTask`](../src/board.ts#L60)
 - One `useMemo` reuses the sorted columns while board state stays the same. — [`BoardScreen.tsx` · `columnTasks`](../src/components/BoardScreen.tsx#L13)
 - React Compiler automates memoization. Profile a larger workload before adding the build step. — [`BoardScreen.tsx` · `columnTasks`](../src/components/BoardScreen.tsx#L13)
 - Scope. One user, in-memory session, Undo, and reset on refresh. — [`App.tsx` · `App`](../src/App.tsx#L5) · [`work-board.spec.ts` · refresh reset](../tests/work-board.spec.ts#L93)
 - Outside the exercise. Accounts, live collaboration, persistence, deletion, and Redo. — [Official brief · scope](../casos/01-quadro-de-trabalho.md#L23)
 
-**Say** “I kept the existing Vite build and used one `useMemo` for column sorting. React Compiler can automate memoization, but it adds a build step. For this small board, I’d profile a larger workload before adding it. The exercise covers a single-person, in-memory session. Refresh resets the board, and the history supports Undo. Accounts, real-time collaboration, persistent storage, standalone deletion, and Redo are outside the exercise.”
+**Say** “This is one in-memory board, so I use React’s `useReducer` for state and native forms with `FormData` and TypeScript validation. I’d consider Zustand if several views needed a shared store, or React Hook Form if the forms grew more complex. I use one `useMemo` for sorting and would profile a larger board before adding React Compiler to the build. Refresh resets the board. The brief leaves accounts, real-time collaboration, persistence, standalone deletion, and Redo out of scope.”
 
 **18:45–20:00 — Show** the [suppression-removal diff](https://github.com/Landlucas/desafios-tecnicos/commit/c736cb285bf468cf0a643c80eff304cb86c6b3e3). Point to the two lines removed in `BoardColumn.tsx` and the list marker change in `styles.css`. Then show the current marker utility in `TaskCard.tsx`.
 
